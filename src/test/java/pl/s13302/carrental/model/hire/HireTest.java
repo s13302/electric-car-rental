@@ -1,43 +1,69 @@
 package pl.s13302.carrental.model.hire;
 
+import org.junit.Before;
 import org.junit.Test;
-import pl.s13302.carrental.error.ErrorRegister;
+import pl.s13302.carrental.BaseTest;
+import pl.s13302.carrental.model.Fault;
+import pl.s13302.carrental.model.Person;
+import pl.s13302.carrental.model.car.Car;
+import pl.s13302.carrental.model.car.DefaultCar;
+import pl.s13302.carrental.model.car.state.FreeCar;
+import pl.s13302.carrental.model.hire.strategy.DefaultCarPriceCalculator;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 import static org.junit.Assert.*;
 
-public class HireTest {
+public class HireTest extends BaseTest {
 
-    @Test
-    public void testDurationWhenFinishIsNull() {
-        // Given:
-        LocalDateTime start = LocalDateTime.of(2020, 9, 25, 13, 20);
-        Hire hire = new Hire(start);
+    private Clock clock;
 
-        // When:
-        long duration = hire.getDuration();
-        Collection<String> errors = ErrorRegister.getRegisteredErrors();
-
-        // Then:
-        assertEquals("getDuration should return -1 when finish is not set", -1L, duration);
-        assertTrue("getDuration method should raise an error", errors.contains("Cannot count duration when hire is not finished."));
-
+    @Before
+    public void setup() {
+        clock = getTestClock();
     }
 
     @Test
-    public void testDurationWhenFinishIsNotNull() {
+    public void testPersonAssociation() {
         // Given:
-        LocalDateTime start = LocalDateTime.of(2020, 9, 25, 13, 20);
-        LocalDateTime finish = start.plusMinutes(10);
-        Hire hire = new Hire(start, finish);
+        Person person = new Person("");
+        Hire hire = new Hire(LocalDateTime.now(clock), null, null, new DefaultCarPriceCalculator());
 
         // When:
-        long duration = hire.getDuration();
+        hire.setPerson(person);
 
-        // Then
-        assertEquals("getDuration should count minutes correctly", 10L, duration);
+        // Then:
+        assertSame("Hire should have association to Person", person, hire.getPerson());
+        assertTrue("Person should have association to Hire", person.getHires().contains(hire));
+    }
+
+    @Test
+    public void testCarAssociation() {
+        // Given:
+        Car car = new DefaultCar("BMW", "i3", new FreeCar());
+        Hire hire = new Hire(LocalDateTime.now(clock), null, null, new DefaultCarPriceCalculator());
+
+        // When:
+        hire.setCar(car);
+
+        // Then:
+        assertSame("Hire should have association to Car", car, hire.getCar());
+        assertTrue("Car should have association to Hire", car.getHires().contains(hire));
+    }
+
+    @Test
+    public void testFaultAssociation() {
+        // Given:
+        Fault fault = new Fault(true);
+        Hire hire = new Hire(LocalDateTime.now(clock), null, null, new DefaultCarPriceCalculator());
+
+        // When:
+        hire.setFault(fault);
+
+        // Then:
+        assertSame("Hire should have association to Fault", fault, hire.getFault());
+        assertTrue("Fault should have association to Hire", fault.getHires().contains(hire));
     }
 
 }

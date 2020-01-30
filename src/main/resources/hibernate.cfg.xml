@@ -29,5 +29,19 @@
         <property name="generate_statistics">false</property>
 
         <!-- Full names the annotated entity class -->
+        <mapping class="pl.s13302.carrental.model.Person" />
+        <mapping class="pl.s13302.carrental.model.CreditCard" />
+        <mapping class="pl.s13302.carrental.model.Hire" />
+        <mapping class="pl.s13302.carrental.model.Fault" />
+        <mapping class="pl.s13302.carrental.model.Repair" />
+        <mapping class="pl.s13302.carrental.model.CarRepair" />
+        <mapping class="pl.s13302.carrental.model.ReplacedElement" />
+        <mapping class="pl.s13302.carrental.model.Car" />
+        <mapping class="pl.s13302.carrental.model.DefaultCar" />
+        <mapping class="pl.s13302.carrental.model.SportCar" />
+        <mapping class="pl.s13302.carrental.model.Insurance" />
+        <mapping class="pl.s13302.carrental.model.Stand" />
+        <mapping class="pl.s13302.carrental.model.Charger" />
+
     </session-factory>
 </hibernate-configuration>

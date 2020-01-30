@@ -1,18 +1,31 @@
 package pl.s13302.carrental.model;
 
-import java.util.Collections;
-import java.util.HashSet;
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
 public class Repair {
 
-    private Fault fault;
-    private CarRepair carRepair;
-    private Set<ReplacedElement> replacedElements = new HashSet<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public Repair(Fault fault, CarRepair carRepair) {
-        setFault(fault);
-        setCarRepair(carRepair);
+    @ManyToOne
+    @JoinColumn(nullable = false, unique = true)
+    private Fault fault;
+
+    @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReplacedElement> replacedElements;
+
+    @ManyToOne
+    private CarRepair carRepair;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Fault getFault() {
@@ -20,13 +33,7 @@ public class Repair {
     }
 
     public void setFault(Fault fault) {
-        if (this.fault != fault) {
-            if (this.fault != null) {
-                this.fault.removeRepair(this);
-            }
-            this.fault = fault;
-            fault.addRepair(this);
-        }
+        this.fault = fault;
     }
 
     public CarRepair getCarRepair() {
@@ -34,31 +41,25 @@ public class Repair {
     }
 
     public void setCarRepair(CarRepair carRepair) {
-        if (this.carRepair != carRepair) {
-            if (this.carRepair != null) {
-                this.carRepair.removeRepair(this);
-            }
-            this.carRepair = carRepair;
-            carRepair.addRepair(this);
-        }
+        this.carRepair = carRepair;
     }
 
     public Set<ReplacedElement> getReplacedElements() {
-        return Collections.unmodifiableSet(replacedElements);
+        return replacedElements;
     }
 
-    public void addReplacedElement(ReplacedElement replacedElement) {
-        if (! replacedElements.contains(replacedElement)) {
-            replacedElements.add(replacedElement);
-            replacedElement.setRepair(this);
-        }
+    public void setReplacedElements(Set<ReplacedElement> replacedElements) {
+        this.replacedElements = replacedElements;
     }
 
-    public void removeReplacedElement(ReplacedElement replacedElement) {
-        if (replacedElements.contains(replacedElement)) {
-            replacedElements.remove(replacedElement);
-            replacedElement.setRepair(null);
-        }
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Repair{");
+        sb.append("id=").append(id);
+        sb.append(", fault=").append(fault);
+        sb.append(", replacedElements=").append(replacedElements);
+        sb.append(", carRepair=").append(carRepair);
+        sb.append('}');
+        return sb.toString();
     }
-
 }

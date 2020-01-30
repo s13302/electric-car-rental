@@ -2,16 +2,16 @@ package pl.s13302.carrental.model;
 
 import javax.persistence.*;
 
-@Entity
-public class Stand {
+@Entity(name = "CreditCard")
+public class CreditCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    private Charger charger;
+    @JoinColumn(unique = true, nullable = false)
+    private Person person;
 
     public Long getId() {
         return id;
@@ -21,19 +21,19 @@ public class Stand {
         this.id = id;
     }
 
-    public Charger getCharger() {
-        return charger;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setCharger(Charger charger) {
-        this.charger = charger;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Stand{");
+        final StringBuilder sb = new StringBuilder("CreditCard{");
         sb.append("id=").append(id);
-        sb.append(", charger=").append(charger);
+        sb.append(", person=").append(person);
         sb.append('}');
         return sb.toString();
     }

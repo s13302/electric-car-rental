@@ -15,7 +15,7 @@ public class Config {
     }
 
     public static String getStringPropertyValue(String propertyName) {
-        if (properties.contains(propertyName)) {
+        if (properties.containsKey(propertyName)) {
             return properties.getProperty(propertyName);
         }
         return null;

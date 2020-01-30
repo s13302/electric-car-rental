@@ -1,35 +1,47 @@
 package pl.s13302.carrental.model;
 
-import pl.s13302.carrental.model.car.Car;
+import javax.persistence.*;
+import java.util.Date;
 
-import java.time.LocalDate;
-
+@Entity
 public class Insurance {
 
-    private final LocalDate from;
-    private LocalDate to;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Temporal(TemporalType.DATE)
+    private Date insuranceFrom;
+
+    @Temporal(TemporalType.DATE)
+    private Date insuranceTo;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Car car;
 
-    public Insurance(LocalDate from, Car car) {
-        this.from = from;
-        setCar(car);
+    public Long getId() {
+        return id;
     }
 
-    public Insurance(LocalDate from, Car car, LocalDate to) {
-        this(from, car);
-        setTo(to);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public LocalDate getFrom() {
-        return from;
+    public Date getInsuranceFrom() {
+        return insuranceFrom;
     }
 
-    public LocalDate getTo() {
-        return to;
+    public void setInsuranceFrom(Date insuranceFrom) {
+        this.insuranceFrom = insuranceFrom;
     }
 
-    public void setTo(LocalDate to) {
-        this.to = to;
+    public Date getInsuranceTo() {
+        return insuranceTo;
+    }
+
+    public void setInsuranceTo(Date insuranceTo) {
+        this.insuranceTo = insuranceTo;
     }
 
     public Car getCar() {
@@ -37,20 +49,16 @@ public class Insurance {
     }
 
     public void setCar(Car car) {
-        if (this.car != car) {
-            if (this.car != null) {
-                this.car.removeInsurance(this);
-            }
-            this.car = car;
-            car.addInsurance(this);
-        }
+        this.car = car;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Insurance{");
-        sb.append("from=").append(from);
-        sb.append(", to=").append(to);
+        sb.append("id=").append(id);
+        sb.append(", insuranceFrom=").append(insuranceFrom);
+        sb.append(", insuranceTo=").append(insuranceTo);
+        sb.append(", car=").append(car);
         sb.append('}');
         return sb.toString();
     }

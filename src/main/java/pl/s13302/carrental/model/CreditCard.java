@@ -1,6 +1,7 @@
 package pl.s13302.carrental.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity(name = "CreditCard")
 public class CreditCard {
@@ -28,6 +29,10 @@ public class CreditCard {
     public void setPerson(Person person) {
         this.person = person;
     }
+
+    public void releaseLock() {}
+
+    public void charge(BigDecimal price) {}
 
     @Override
     public String toString() {

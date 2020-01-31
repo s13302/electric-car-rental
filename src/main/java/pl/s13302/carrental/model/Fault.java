@@ -1,6 +1,8 @@
 package pl.s13302.carrental.model;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,10 +16,10 @@ public class Fault {
     private boolean personInFault;
 
     @OneToMany(mappedBy = "fault", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Hire> hires;
+    private Set<Hire> hires = new HashSet<>();
 
     @OneToMany(mappedBy = "fault", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Repair> repairs;
+    private Set<Repair> repairs = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -36,11 +38,19 @@ public class Fault {
     }
 
     public Set<Hire> getHires() {
-        return hires;
+        return Collections.unmodifiableSet(hires);
     }
 
     public void setHires(Set<Hire> hires) {
         this.hires = hires;
+    }
+
+    public Set<Repair> getRepairs() {
+        return Collections.unmodifiableSet(repairs);
+    }
+
+    public void setRepairs(Set<Repair> repairs) {
+        this.repairs = repairs;
     }
 
     @Override
@@ -49,6 +59,7 @@ public class Fault {
         sb.append("id=").append(id);
         sb.append(", personInFault=").append(personInFault);
         sb.append(", hires=").append(hires);
+        sb.append(", repairs=").append(repairs);
         sb.append('}');
         return sb.toString();
     }

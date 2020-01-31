@@ -1,7 +1,9 @@
 package pl.s13302.carrental.model;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,10 +20,10 @@ public class Person {
     private Date drivingLicenseValidTo;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CreditCard> creditCards;
+    private Set<CreditCard> creditCards = new HashSet<>();
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Hire> hires;
+    private Set<Hire> hires = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -48,7 +50,7 @@ public class Person {
     }
 
     public Set<CreditCard> getCreditCards() {
-        return creditCards;
+        return Collections.unmodifiableSet(creditCards);
     }
 
     public void setCreditCards(Set<CreditCard> creditCards) {
@@ -56,7 +58,7 @@ public class Person {
     }
 
     public Set<Hire> getHires() {
-        return hires;
+        return Collections.unmodifiableSet(hires);
     }
 
     public void setHires(Set<Hire> hires) {

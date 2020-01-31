@@ -1,6 +1,8 @@
 package pl.s13302.carrental.model;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,7 +13,7 @@ public class CarRepair {
     private Long id;
 
     @OneToMany(mappedBy = "carRepair", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Repair> repairs;
+    private Set<Repair> repairs = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -22,7 +24,7 @@ public class CarRepair {
     }
 
     public Set<Repair> getRepairs() {
-        return repairs;
+        return Collections.unmodifiableSet(repairs);
     }
 
     public void setRepairs(Set<Repair> repairs) {

@@ -1,6 +1,8 @@
 package pl.s13302.carrental.model;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,7 +17,7 @@ public class Repair {
     private Fault fault;
 
     @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ReplacedElement> replacedElements;
+    private Set<ReplacedElement> replacedElements = new HashSet<>();
 
     @ManyToOne
     private CarRepair carRepair;
@@ -45,7 +47,7 @@ public class Repair {
     }
 
     public Set<ReplacedElement> getReplacedElements() {
-        return replacedElements;
+        return Collections.unmodifiableSet(replacedElements);
     }
 
     public void setReplacedElements(Set<ReplacedElement> replacedElements) {

@@ -1,8 +1,15 @@
 package pl.s13302.carrental.model;
 
+import pl.s13302.carrental.Main;
 import pl.s13302.carrental.model.enums.CarState;
+import pl.s13302.carrental.model.factory.CarStateFactory;
+import pl.s13302.carrental.model.state.ICarState;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.Clock;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,10 +32,13 @@ public abstract class Car {
     private CarState state;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Hire> hires;
+    private Set<Hire> hires = new HashSet<>();
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Insurance> insurances;
+    private Set<Insurance> insurances = new HashSet<>();
+
+    @Transient
+    private ICarState carState;
 
     public Long getId() {
         return id;
@@ -60,10 +70,20 @@ public abstract class Car {
 
     public void setState(CarState state) {
         this.state = state;
+        this.carState = CarStateFactory.createCarState(state);
     }
 
     public Set<Hire> getHires() {
-        return hires;
+        return Collections.unmodifiableSet(hires);
+    }
+
+    public Hire getStartedHire() {
+        for (Hire hire : hires) {
+            if (hire.getFinish() == null) {
+                return hire;
+            }
+        }
+        return null;
     }
 
     public void setHires(Set<Hire> hires) {
@@ -71,11 +91,18 @@ public abstract class Car {
     }
 
     public Set<Insurance> getInsurances() {
-        return insurances;
+        return Collections.unmodifiableSet(insurances);
     }
 
     public void setInsurances(Set<Insurance> insurances) {
         this.insurances = insurances;
+    }
+
+    @Transient
+    public abstract BigDecimal getHourPrice();
+
+    public void releaseCar(Clock clock) {
+        setState(this.carState.releaseCar(this, clock));
     }
 
     @Override
@@ -87,6 +114,7 @@ public abstract class Car {
         sb.append(", state=").append(state);
         sb.append(", hires=").append(hires);
         sb.append(", insurances=").append(insurances);
+        sb.append(", hourPrice=").append(getHourPrice());
         sb.append('}');
         return sb.toString();
     }

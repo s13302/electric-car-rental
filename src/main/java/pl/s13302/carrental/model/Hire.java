@@ -1,7 +1,11 @@
 package pl.s13302.carrental.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 @Entity
 public class Hire {
@@ -10,11 +14,10 @@ public class Hire {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date start;
+    @Column(nullable = false)
+    private LocalDateTime start;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date finish;
+    private LocalDateTime finish;
 
     @ManyToOne
     @JoinColumn(unique = true, nullable = false)
@@ -35,19 +38,19 @@ public class Hire {
         this.id = id;
     }
 
-    public Date getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public Date getFinish() {
+    public LocalDateTime getFinish() {
         return finish;
     }
 
-    public void setFinish(Date finish) {
+    public void setFinish(LocalDateTime finish) {
         this.finish = finish;
     }
 
@@ -73,6 +76,27 @@ public class Hire {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    @Transient
+    public Long getDuration() {
+        if (finish != null && (finish.isAfter(start) || finish.isEqual(start))) {
+            return start.until(finish, ChronoUnit.MINUTES);
+        }
+        return null;
+    }
+
+    public BigDecimal countPrice() {
+        Long duration = getDuration();
+        if (duration != null) {
+            BigDecimal carHourPrice = car.getHourPrice();
+            if (duration % 10 > 0) {
+                duration += 10L;
+            }
+            duration /= 10;
+            return carHourPrice.multiply(BigDecimal.valueOf(duration)).setScale(2);
+        }
+        return null;
     }
 
     @Override

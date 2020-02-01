@@ -9,7 +9,8 @@ import java.util.Set;
 public class Repair {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "repair_generator")
+    @SequenceGenerator(name = "repair_generator", initialValue = 1000)
     private Long id;
 
     @ManyToOne
@@ -58,9 +59,6 @@ public class Repair {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Repair{");
         sb.append("id=").append(id);
-        sb.append(", fault=").append(fault);
-        sb.append(", replacedElements=").append(replacedElements);
-        sb.append(", carRepair=").append(carRepair);
         sb.append('}');
         return sb.toString();
     }

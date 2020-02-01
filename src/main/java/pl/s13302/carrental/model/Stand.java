@@ -6,7 +6,8 @@ import javax.persistence.*;
 public class Stand {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stand_generator")
+    @SequenceGenerator(name = "stand_generator", initialValue = 1000)
     private Long id;
 
     @ManyToOne
@@ -33,7 +34,6 @@ public class Stand {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Stand{");
         sb.append("id=").append(id);
-        sb.append(", charger=").append(charger);
         sb.append('}');
         return sb.toString();
     }

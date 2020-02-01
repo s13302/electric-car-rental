@@ -3,15 +3,14 @@ package pl.s13302.carrental.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 
 @Entity
 public class Hire {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hire_generator")
+    @SequenceGenerator(name = "hire_generator", initialValue = 1000)
     private Long id;
 
     @Column(nullable = false)
@@ -20,7 +19,7 @@ public class Hire {
     private LocalDateTime finish;
 
     @ManyToOne
-    @JoinColumn(unique = true, nullable = false)
+    @JoinColumn(nullable = false)
     private Person person;
 
     @ManyToOne
@@ -105,9 +104,6 @@ public class Hire {
         sb.append("id=").append(id);
         sb.append(", start=").append(start);
         sb.append(", finish=").append(finish);
-        sb.append(", person=").append(person);
-        sb.append(", fault=").append(fault);
-        sb.append(", car=").append(car);
         sb.append('}');
         return sb.toString();
     }

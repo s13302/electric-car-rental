@@ -7,7 +7,8 @@ import java.util.Date;
 public class Insurance {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "insurance_generator")
+    @SequenceGenerator(name = "insurance_generator", initialValue = 1000)
     private Long id;
 
     @Temporal(TemporalType.DATE)
@@ -58,7 +59,6 @@ public class Insurance {
         sb.append("id=").append(id);
         sb.append(", insuranceFrom=").append(insuranceFrom);
         sb.append(", insuranceTo=").append(insuranceTo);
-        sb.append(", car=").append(car);
         sb.append('}');
         return sb.toString();
     }

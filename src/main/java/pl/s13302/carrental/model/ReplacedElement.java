@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 public class ReplacedElement {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "replaced_element_generator")
+    @SequenceGenerator(name = "replaced_element_generator", initialValue = 1000)
     private Long id;
 
     @Column(nullable = false)
@@ -58,7 +59,6 @@ public class ReplacedElement {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", price=").append(price);
-        sb.append(", repair=").append(repair);
         sb.append('}');
         return sb.toString();
     }

@@ -9,7 +9,8 @@ import java.util.Set;
 public class CarRepair {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_repair_generator")
+    @SequenceGenerator(name = "car_repair_generator", initialValue = 1000)
     private Long id;
 
     @OneToMany(mappedBy = "carRepair", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -35,7 +36,6 @@ public class CarRepair {
     public String toString() {
         final StringBuilder sb = new StringBuilder("CarRepair{");
         sb.append("id=").append(id);
-        sb.append(", repairs=").append(repairs);
         sb.append('}');
         return sb.toString();
     }

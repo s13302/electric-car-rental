@@ -10,7 +10,8 @@ import java.util.Set;
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_generator")
+    @SequenceGenerator(name = "person_generator", initialValue = 1000)
     private Long id;
 
     @Column(nullable = false)
@@ -71,8 +72,6 @@ public class Person {
         sb.append("id=").append(id);
         sb.append(", drivingLicenseNumber='").append(drivingLicenseNumber).append('\'');
         sb.append(", drivingLicenseValidTo=").append(drivingLicenseValidTo);
-        sb.append(", creditCards=").append(creditCards);
-        sb.append(", hires=").append(hires);
         sb.append('}');
         return sb.toString();
     }

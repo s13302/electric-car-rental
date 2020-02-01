@@ -1,6 +1,5 @@
 package pl.s13302.carrental.model;
 
-import pl.s13302.carrental.Main;
 import pl.s13302.carrental.model.enums.CarState;
 import pl.s13302.carrental.model.factory.CarStateFactory;
 import pl.s13302.carrental.model.state.ICarState;
@@ -18,7 +17,8 @@ import java.util.Set;
 public abstract class Car {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_generator")
+    @SequenceGenerator(name = "car_generator", initialValue = 1000)
     private Long id;
 
     @Column(nullable = false)
@@ -111,9 +111,6 @@ public abstract class Car {
         sb.append("id=").append(id);
         sb.append(", brand='").append(brand).append('\'');
         sb.append(", model='").append(model).append('\'');
-        sb.append(", state=").append(state);
-        sb.append(", hires=").append(hires);
-        sb.append(", insurances=").append(insurances);
         sb.append(", hourPrice=").append(getHourPrice());
         sb.append('}');
         return sb.toString();

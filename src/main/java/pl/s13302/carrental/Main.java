@@ -4,8 +4,6 @@ import pl.s13302.carrental.configuration.Config;
 import pl.s13302.carrental.configuration.DatabaseOperation;
 import pl.s13302.carrental.configuration.IConstants;
 import pl.s13302.carrental.model.Car;
-import pl.s13302.carrental.model.DefaultCar;
-import pl.s13302.carrental.model.enums.CarState;
 
 import java.time.Clock;
 import java.time.ZoneId;
@@ -19,20 +17,8 @@ public class Main {
         initializeApp();
 
         ((DatabaseOperation) (session) -> {
-            Car car = new DefaultCar();
-            car.setBrand("BMW");
-            car.setModel("i3");
-            car.setState(CarState.RENTED);
-            session.saveOrUpdate(car);
-
             List<Car> cars = session.createQuery("from pl.s13302.carrental.model.Car").list();
-
-            cars.forEach(current -> {
-                current.releaseCar(DEFAULT_CLOCK);
-                session.saveOrUpdate(current);
-
-                System.out.println(current);
-            });
+            cars.forEach(System.out::println);
         }).run();
     }
 

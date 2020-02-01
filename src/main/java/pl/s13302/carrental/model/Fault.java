@@ -9,7 +9,8 @@ import java.util.Set;
 public class Fault {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fault_generator")
+    @SequenceGenerator(name = "fault_generator", initialValue = 1000)
     private Long id;
 
     @Column(nullable = false)
@@ -58,8 +59,6 @@ public class Fault {
         final StringBuilder sb = new StringBuilder("Fault{");
         sb.append("id=").append(id);
         sb.append(", personInFault=").append(personInFault);
-        sb.append(", hires=").append(hires);
-        sb.append(", repairs=").append(repairs);
         sb.append('}');
         return sb.toString();
     }

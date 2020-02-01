@@ -7,11 +7,12 @@ import java.math.BigDecimal;
 public class CreditCard {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "credit_card_generator")
+    @SequenceGenerator(name = "credit_card_generator", initialValue = 1000)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(unique = true, nullable = false)
+    @JoinColumn(nullable = false)
     private Person person;
 
     public Long getId() {
@@ -38,7 +39,6 @@ public class CreditCard {
     public String toString() {
         final StringBuilder sb = new StringBuilder("CreditCard{");
         sb.append("id=").append(id);
-        sb.append(", person=").append(person);
         sb.append('}');
         return sb.toString();
     }

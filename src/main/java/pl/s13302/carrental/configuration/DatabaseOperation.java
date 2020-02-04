@@ -8,9 +8,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public interface DatabaseOperation {
 
-    void operation(Session session);
+    Object operation(Session session);
 
-    default void run() {
+    default Object run() {
         StandardServiceRegistry registry = null;
         SessionFactory sessionFactory = null;
         try {
@@ -20,9 +20,10 @@ public interface DatabaseOperation {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            operation(session);
+            Object result = operation(session);
             session.getTransaction().commit();
             session.close();
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             StandardServiceRegistryBuilder.destroy(registry);
@@ -31,6 +32,7 @@ public interface DatabaseOperation {
                 sessionFactory.close();
             }
         }
+        return null;
     }
 
 }

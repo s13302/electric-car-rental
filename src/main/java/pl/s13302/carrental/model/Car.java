@@ -102,6 +102,7 @@ public abstract class Car {
     public abstract BigDecimal getHourPrice();
 
     public void releaseCar(Clock clock) {
+        setState(getState());
         setState(this.carState.releaseCar(this, clock));
     }
 

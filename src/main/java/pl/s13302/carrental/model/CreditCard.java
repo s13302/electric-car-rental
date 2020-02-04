@@ -31,9 +31,13 @@ public class CreditCard {
         this.person = person;
     }
 
-    public void releaseLock() {}
+    public void releaseLock() {
+        System.out.println("[CreditCard] releasing lock");
+    }
 
-    public void charge(BigDecimal price) {}
+    public void charge(BigDecimal price) {
+        System.out.println("[CreditCard] charging price " + price);
+    }
 
     @Override
     public String toString() {

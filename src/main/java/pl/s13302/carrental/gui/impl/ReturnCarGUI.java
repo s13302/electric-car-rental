@@ -35,7 +35,16 @@ public class ReturnCarGUI extends BaseGUI {
             hireInformation.add(new JLabel("Długość czasu wypożyczenia[min]: "));
             hireInformation.add(new JLabel("Aktualny koszt[PLN]: "));
             rightColumn.add(hireInformation, BorderLayout.CENTER);
-            rightColumn.add(new JButton("Zwróć"), BorderLayout.PAGE_END);
+
+            JButton returnButton = new JButton("Zwróć");
+            returnButton.addActionListener((event) -> {
+                try {
+                    showNextWindow(this, ReturnAcceptGUI.class, applicationService);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            rightColumn.add(returnButton, BorderLayout.PAGE_END);
 
             panel.add(rightColumn, BorderLayout.CENTER);
             return panel;

@@ -7,6 +7,7 @@ import pl.s13302.carrental.gui.impl.ReturnCarGUI;
 import pl.s13302.carrental.service.IApplicationService;
 import pl.s13302.carrental.service.impl.ApplicationService;
 
+import javax.swing.*;
 import java.time.Clock;
 import java.time.ZoneId;
 
@@ -18,7 +19,13 @@ public class Main {
     public static void main(String[] args) throws Exception {
         initializeApp();
 
-        BaseGUI window = BaseGUI.showNextWindow(ReturnCarGUI.class, applicationService);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                BaseGUI.showNextWindow(null, ReturnCarGUI.class, applicationService);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private static void initializeApp() throws Exception {

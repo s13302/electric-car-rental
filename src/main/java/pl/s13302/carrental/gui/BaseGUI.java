@@ -3,6 +3,7 @@ package pl.s13302.carrental.gui;
 import pl.s13302.carrental.service.IApplicationService;
 
 import javax.swing.*;
+import java.awt.event.WindowEvent;
 
 public abstract class BaseGUI extends JFrame {
 
@@ -14,19 +15,23 @@ public abstract class BaseGUI extends JFrame {
         setSize(600, 160);
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
      * Creation method which using reflection. Creates the instance from one-parameter constructor with type IApplicationService
      * @see IApplicationService
+     * @param currentWindow current window to close
      * @param nextWindowClass Type of window to create.
      * @param applicationService Application service to use
      * @return Instance of created window.
      * @throws Exception
      */
-    public static BaseGUI showNextWindow(Class<? extends BaseGUI> nextWindowClass, IApplicationService applicationService) throws Exception {
+    public static BaseGUI showNextWindow(BaseGUI currentWindow, Class<? extends BaseGUI> nextWindowClass, IApplicationService applicationService) throws Exception {
         assert nextWindowClass != null;
+        if (currentWindow != null) {
+            currentWindow.dispatchEvent(new WindowEvent(currentWindow, WindowEvent.WINDOW_CLOSING));
+        }
         BaseGUI nextWindow = nextWindowClass
                 .getConstructor(IApplicationService.class)
                 .newInstance(applicationService);

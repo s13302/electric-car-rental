@@ -1,12 +1,15 @@
 package pl.s13302.carrental.service;
 
-import java.math.BigDecimal;
+import pl.s13302.carrental.helper.NotFinishedHireDescription;
+
 import java.time.Clock;
 
 public interface IApplicationService {
 
-    BigDecimal countPrice(Long hireId, Clock clock);
+    Clock getClock();
 
-    void releaseCar(Long hireId, Clock clock);
+    NotFinishedHireDescription countPrice(Long hireId);
+
+    void releaseCar(Long hireId);
 
 }

@@ -2,6 +2,7 @@ package pl.s13302.carrental.gui.impl;
 
 import pl.s13302.carrental.configuration.Config;
 import pl.s13302.carrental.gui.BaseGUI;
+import pl.s13302.carrental.helper.NotFinishedHireDescription;
 import pl.s13302.carrental.service.IApplicationService;
 
 import javax.swing.*;
@@ -11,8 +12,28 @@ public class ReturnCarGUI extends BaseGUI {
 
     private static final String TITLE = "Zwróć samochód";
 
+    private final Long hireId = 3L;
+
+    private JPanel rightPanel = new JPanel();
+    private JLabel rentTime = null;
+    private JLabel price = null;
+
     public ReturnCarGUI(IApplicationService applicationService) {
         super(TITLE, applicationService);
+    }
+
+    @Override
+    public void tick() {
+        NotFinishedHireDescription hireDescription = getApplicationService().countPrice(hireId);
+
+        rentTime = new JLabel("Czas wypożyczenia: " + hireDescription.getRentTime() + " min");
+        price = new JLabel("Wyliczona cena: " + hireDescription.getPrice() + " PLN");
+
+        Font priceFont = price.getFont();
+        price.setFont(priceFont.deriveFont(priceFont.getStyle() | Font.BOLD));
+
+        rightPanel.add(rentTime);
+        rightPanel.add(price);
     }
 
     @Override
@@ -30,16 +51,14 @@ public class ReturnCarGUI extends BaseGUI {
 
             JPanel rightColumn = new JPanel(new BorderLayout());
 
-            JPanel hireInformation = new JPanel();
-            hireInformation.setLayout(new BoxLayout(hireInformation, BoxLayout.Y_AXIS));
-            hireInformation.add(new JLabel("Długość czasu wypożyczenia[min]: "));
-            hireInformation.add(new JLabel("Aktualny koszt[PLN]: "));
-            rightColumn.add(hireInformation, BorderLayout.CENTER);
+
+            rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+            rightColumn.add(rightPanel, BorderLayout.CENTER);
 
             JButton returnButton = new JButton("Zwróć");
             returnButton.addActionListener((event) -> {
                 try {
-                    showNextWindow(this, ReturnAcceptGUI.class, applicationService);
+                    showNextWindow(this, ReturnAcceptGUI.class, getApplicationService());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

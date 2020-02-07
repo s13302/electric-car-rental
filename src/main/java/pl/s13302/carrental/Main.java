@@ -31,7 +31,7 @@ public class Main {
     private static void initializeApp() throws Exception {
         Config.loadConfiguration();
         DEFAULT_CLOCK = Clock.system(ZoneId.of(Config.getStringPropertyValue(IConstants.PROPERTY_ZONE_ID)));
-        applicationService = new ApplicationService();
+        applicationService = new ApplicationService(DEFAULT_CLOCK);
     }
 
 }

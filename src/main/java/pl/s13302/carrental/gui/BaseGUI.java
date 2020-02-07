@@ -4,10 +4,11 @@ import pl.s13302.carrental.service.IApplicationService;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
+import java.util.Timer;
 
 public abstract class BaseGUI extends JFrame {
 
-    protected final IApplicationService applicationService;
+    private final IApplicationService applicationService;
 
     protected BaseGUI(String title, IApplicationService applicationService) {
         super(title);
@@ -16,6 +17,10 @@ public abstract class BaseGUI extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }
+
+    public IApplicationService getApplicationService() {
+        return applicationService;
     }
 
     /**
@@ -46,5 +51,10 @@ public abstract class BaseGUI extends JFrame {
      * @see JPanel
      */
     public abstract JPanel showWindow();
+
+    /**
+     * Method which provides ability to change the data. Here you need to implement the change logic.
+     */
+    public void tick() {}
 
 }

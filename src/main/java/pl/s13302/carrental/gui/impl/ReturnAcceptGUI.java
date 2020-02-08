@@ -26,6 +26,16 @@ public class ReturnAcceptGUI extends BaseGUI {
     public void tick() {
         NotFinishedHireDescription hireDescription = getApplicationService().countPrice(hireId);
 
+        if (rentTime != null) {
+            leftPanel.remove(rentTime);
+        }
+        if (distance != null) {
+            leftPanel.remove(distance);
+        }
+        if (price != null) {
+            leftPanel.remove(price);
+        }
+
         rentTime = new JLabel("Czas wypożyczenia: " + hireDescription.getRentTime() + " min");
         distance = new JLabel("Przejechany dystans: " + hireDescription.getDistance() + " km");
         price = new JLabel("Wyliczona cena: " + hireDescription.getPrice() + " PLN");

@@ -26,6 +26,13 @@ public class ReturnCarGUI extends BaseGUI {
     public void tick() {
         NotFinishedHireDescription hireDescription = getApplicationService().countPrice(hireId);
 
+        if (rentTime != null) {
+            rightPanel.remove(rentTime);
+        }
+        if (price != null) {
+            rightPanel.remove(price);
+        }
+
         rentTime = new JLabel("Czas wypożyczenia: " + hireDescription.getRentTime() + " min");
         price = new JLabel("Wyliczona cena: " + hireDescription.getPrice() + " PLN");
 

@@ -6,6 +6,7 @@ import pl.s13302.carrental.service.IApplicationService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class ReturnAcceptGUI extends BaseGUI {
 
@@ -56,7 +57,13 @@ public class ReturnAcceptGUI extends BaseGUI {
         panel.add(leftPanel, BorderLayout.CENTER);
 
         JPanel secondPanel = new JPanel(new BorderLayout());
-        secondPanel.add(new JButton("Akceptuj"), BorderLayout.PAGE_END);
+
+        JButton acceptButton = new JButton("Akceptuj");
+        acceptButton.addActionListener((event) -> {
+            getApplicationService().releaseCar(hireId);
+            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        });
+        secondPanel.add(acceptButton, BorderLayout.PAGE_END);
         panel.add(secondPanel, BorderLayout.LINE_END);
 
         return panel;

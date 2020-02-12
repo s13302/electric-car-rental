@@ -24,6 +24,6 @@ INSERT INTO `insurance`(`id`, `insuranceFrom`, `insuranceTo`, `car_id`) VALUES (
 INSERT INTO `insurance`(`id`, `insuranceFrom`, `insuranceTo`, `car_id`) VALUES (7, '2020-01-01', '2020-12-31', 5);
 
 INSERT INTO `hire`(`id`, `start`, `finish`, `car_id`, `person_id`) VALUES (1, '2020-01-01T11:00:00.00Z', '2020-01-01T11:30:00.00Z', 1, 1);
-INSERT INTO `hire`(`id`, `start`, `finish`, `car_id`, `person_id`) VALUES (2, '2020-01-02T09:25:00.00Z', '2020-01-01T12:50:00.00Z', 2, 1);
+INSERT INTO `hire`(`id`, `start`, `finish`, `car_id`, `person_id`) VALUES (2, '2020-01-02T09:25:00.00Z', '2020-01-05T12:50:00.00Z', 2, 1);
 INSERT INTO `hire`(`id`, `start`, `finish`, `car_id`, `person_id`) VALUES (3, '2020-01-03T09:25:00.00Z', NULL, 2, 1);
 INSERT INTO `hire`(`id`, `start`, `finish`, `car_id`, `person_id`) VALUES (4, '2020-02-01T09:25:00.00Z', NULL, 3, 3);

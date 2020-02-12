@@ -79,10 +79,15 @@ public class Hire {
 
     @Transient
     public Long getDuration() {
-        if (finish != null && (finish.isAfter(start) || finish.isEqual(start))) {
+        if (isFinished() && (finish.isAfter(start) || finish.isEqual(start))) {
             return start.until(finish, ChronoUnit.MINUTES);
         }
         return null;
+    }
+
+    @Transient
+    public boolean isFinished() {
+        return (finish != null);
     }
 
     public BigDecimal countPrice() {
@@ -104,6 +109,7 @@ public class Hire {
         sb.append("id=").append(id);
         sb.append(", start=").append(start);
         sb.append(", finish=").append(finish);
+        sb.append(", finished=").append(isFinished());
         sb.append('}');
         return sb.toString();
     }

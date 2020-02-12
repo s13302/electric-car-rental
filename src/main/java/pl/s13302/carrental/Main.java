@@ -3,6 +3,7 @@ package pl.s13302.carrental;
 import pl.s13302.carrental.configuration.Config;
 import pl.s13302.carrental.configuration.IConstants;
 import pl.s13302.carrental.gui.BaseGUI;
+import pl.s13302.carrental.gui.impl.HireListGUI;
 import pl.s13302.carrental.gui.impl.ReturnCarGUI;
 import pl.s13302.carrental.service.IApplicationService;
 import pl.s13302.carrental.service.impl.ApplicationService;
@@ -17,18 +18,19 @@ public class Main {
     public static Clock DEFAULT_CLOCK;
     public static IApplicationService applicationService;
 
+    public static long personId;
+
     public static void main(String[] args) throws Exception {
         initializeApp();
 
         System.out.print("Tell me which person ID you want to use: ");
-        long personId = 0;
         try (Scanner scanner = new Scanner(System.in)) {
             personId = scanner.nextLong();
         }
 
         SwingUtilities.invokeLater(() -> {
             try {
-                BaseGUI.showNextWindow(null, ReturnCarGUI.class, applicationService);
+                BaseGUI.showNextWindow(null, HireListGUI.class, applicationService);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

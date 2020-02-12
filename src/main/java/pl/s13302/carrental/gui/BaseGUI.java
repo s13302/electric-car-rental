@@ -56,6 +56,7 @@ public abstract class BaseGUI extends JFrame {
                 .newInstance(applicationService);
         nextWindow.add(nextWindow.showWindow());
         nextWindow.setVisible(true);
+        nextWindow.tick();
         nextWindow.timer.start();
         return nextWindow;
     }

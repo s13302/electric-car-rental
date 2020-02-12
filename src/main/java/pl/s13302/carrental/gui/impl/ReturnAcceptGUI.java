@@ -61,6 +61,7 @@ public class ReturnAcceptGUI extends BaseGUI {
         JButton acceptButton = new JButton("Akceptuj");
         acceptButton.addActionListener((event) -> {
             getApplicationService().releaseCar(hireId);
+            JOptionPane.showMessageDialog(null, "Wypożyczenie zakończono pomyślnie");
             dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         });
         secondPanel.add(acceptButton, BorderLayout.PAGE_END);

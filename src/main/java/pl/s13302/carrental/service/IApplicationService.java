@@ -16,4 +16,6 @@ public interface IApplicationService {
 
     void releaseCar(Long hireId);
 
+    void finalizeService();
+
 }

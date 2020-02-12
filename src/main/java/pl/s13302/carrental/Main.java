@@ -4,7 +4,6 @@ import pl.s13302.carrental.configuration.Config;
 import pl.s13302.carrental.configuration.IConstants;
 import pl.s13302.carrental.gui.BaseGUI;
 import pl.s13302.carrental.gui.impl.HireListGUI;
-import pl.s13302.carrental.gui.impl.ReturnCarGUI;
 import pl.s13302.carrental.service.IApplicationService;
 import pl.s13302.carrental.service.impl.ApplicationService;
 
@@ -19,6 +18,7 @@ public class Main {
     public static IApplicationService applicationService;
 
     public static long personId;
+    public static long hireId;
 
     public static void main(String[] args) throws Exception {
         initializeApp();

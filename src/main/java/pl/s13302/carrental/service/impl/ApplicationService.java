@@ -1,6 +1,10 @@
 package pl.s13302.carrental.service.impl;
 
-import pl.s13302.carrental.configuration.DatabaseOperation;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import pl.s13302.carrental.helper.NotFinishedHireDescription;
 import pl.s13302.carrental.model.CreditCard;
 import pl.s13302.carrental.model.Hire;
@@ -17,19 +21,15 @@ public class ApplicationService implements IApplicationService {
 
     private final Clock clock;
 
-    public Collection<Hire> getAllPersonHires(long personId) {
-        return (Collection<Hire>) ((DatabaseOperation) (session) -> {
-            Person person = (Person) session.createQuery("from pl.s13302.carrental.model.Person where id=:personId")
-                    .setParameter("personId", personId)
-                    .getSingleResult();
-            return Collections.unmodifiableCollection(session.createQuery("from pl.s13302.carrental.model.Hire where person=:person")
-                    .setParameter("person", person)
-                    .list());
-        }).run();
-    }
+    private final Session session;
 
-    public ApplicationService(Clock clock) {
+    public ApplicationService(Clock clock) throws Exception {
         this.clock = clock;
+        StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+                .configure()
+                .build();
+        SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        session = sessionFactory.openSession();
     }
 
     @Override
@@ -37,9 +37,31 @@ public class ApplicationService implements IApplicationService {
         return clock;
     }
 
+    public Collection<Hire> getAllPersonHires(long personId) {
+        try {
+            session.beginTransaction();
+            Person person = (Person) session.createQuery("from pl.s13302.carrental.model.Person where id=:personId")
+                    .setParameter("personId", personId)
+                    .getSingleResult();
+            Collection<Hire> result = Collections.unmodifiableCollection(
+                    session.createQuery("from pl.s13302.carrental.model.Hire where person=:person")
+                            .setParameter("person", person)
+                            .list()
+            );
+            session.getTransaction().commit();
+            return result;
+        } catch (Exception e) {
+            if (session.getTransaction().getStatus().canRollback()) {
+                session.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public NotFinishedHireDescription countPrice(long hireId) {
-        return (NotFinishedHireDescription) ((DatabaseOperation) (session) -> {
+        try {
+            session.beginTransaction();
             Hire hire = (Hire) session.createQuery("from pl.s13302.carrental.model.Hire where id=:hireId")
                     .setParameter("hireId", hireId)
                     .getSingleResult();
@@ -47,14 +69,20 @@ public class ApplicationService implements IApplicationService {
             BigDecimal countedPrice = hire.countPrice();
             long distance = 300L;
             long time = hire.getDuration();
-            hire.setFinish(null);
+            session.getTransaction().rollback();
             return new NotFinishedHireDescription(countedPrice, distance, time);
-        }).run();
+        } catch (Exception e) {
+            if (session.getTransaction().getStatus().canRollback()) {
+                session.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void releaseCar(Long hireId) {
-        ((DatabaseOperation) (session) -> {
+        try {
+            session.beginTransaction();
             Hire hire = (Hire) session.createQuery("from pl.s13302.carrental.model.Hire where id=:hireId")
                     .setParameter("hireId", hireId)
                     .getSingleResult();
@@ -65,8 +93,18 @@ public class ApplicationService implements IApplicationService {
             CreditCard creditCard = hire.getPerson().getCreditCards().toArray(new CreditCard[0])[0];
             creditCard.releaseLock();
             creditCard.charge(price);
-            return null;
-        }).run();
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction().getStatus().canRollback()) {
+                session.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        }
     }
 
+    @Override
+    public void finalizeService() {
+        session.close();
+    }
 }

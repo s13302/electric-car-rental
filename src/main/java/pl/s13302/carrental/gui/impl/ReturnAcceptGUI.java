@@ -1,5 +1,6 @@
 package pl.s13302.carrental.gui.impl;
 
+import pl.s13302.carrental.Main;
 import pl.s13302.carrental.gui.BaseGUI;
 import pl.s13302.carrental.helper.NotFinishedHireDescription;
 import pl.s13302.carrental.service.IApplicationService;
@@ -12,8 +13,6 @@ public class ReturnAcceptGUI extends BaseGUI {
 
     private static final String TITLE = "Akceptacja";
 
-    private final Long hireId = 3L;
-
     private JPanel leftPanel = new JPanel();
     private JLabel rentTime = null;
     private JLabel distance = null;
@@ -25,7 +24,7 @@ public class ReturnAcceptGUI extends BaseGUI {
 
     @Override
     public void tick() {
-        NotFinishedHireDescription hireDescription = getApplicationService().countPrice(hireId);
+        NotFinishedHireDescription hireDescription = getApplicationService().countPrice(Main.hireId);
 
         if (rentTime != null) {
             leftPanel.remove(rentTime);
@@ -60,9 +59,14 @@ public class ReturnAcceptGUI extends BaseGUI {
 
         JButton acceptButton = new JButton("Akceptuj");
         acceptButton.addActionListener((event) -> {
-            getApplicationService().releaseCar(hireId);
+            getApplicationService().releaseCar(Main.hireId);
+            Main.hireId = -1;
             JOptionPane.showMessageDialog(null, "Wypożyczenie zakończono pomyślnie");
-            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            try {
+                showNextWindow(this, HireListGUI.class, getApplicationService());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
         secondPanel.add(acceptButton, BorderLayout.PAGE_END);
         panel.add(secondPanel, BorderLayout.LINE_END);

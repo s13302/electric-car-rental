@@ -1,5 +1,6 @@
 package pl.s13302.carrental.gui.impl;
 
+import pl.s13302.carrental.Main;
 import pl.s13302.carrental.configuration.Config;
 import pl.s13302.carrental.gui.BaseGUI;
 import pl.s13302.carrental.helper.NotFinishedHireDescription;
@@ -12,8 +13,6 @@ public class ReturnCarGUI extends BaseGUI {
 
     private static final String TITLE = "Zwróć samochód";
 
-    private final Long hireId = 3L;
-
     private JPanel rightPanel = new JPanel();
     private JLabel rentTime = null;
     private JLabel price = null;
@@ -24,7 +23,7 @@ public class ReturnCarGUI extends BaseGUI {
 
     @Override
     public void tick() {
-        NotFinishedHireDescription hireDescription = getApplicationService().countPrice(hireId);
+        NotFinishedHireDescription hireDescription = getApplicationService().countPrice(Main.hireId);
 
         if (rentTime != null) {
             rightPanel.remove(rentTime);

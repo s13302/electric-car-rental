@@ -8,15 +8,11 @@ import java.awt.event.WindowEvent;
 
 public abstract class BaseGUI extends JFrame {
 
-    private static final int INTERVAL = 1000;
-
     private final IApplicationService applicationService;
-    private final Timer timer;
 
     protected BaseGUI(String title, IApplicationService applicationService) {
         super(title);
         this.applicationService = applicationService;
-        this.timer = createTickTimer();
         setSize(600, 160);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -27,7 +23,6 @@ public abstract class BaseGUI extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                timer.stop();
             }
 
         });
@@ -57,7 +52,6 @@ public abstract class BaseGUI extends JFrame {
         nextWindow.add(nextWindow.showWindow());
         nextWindow.setVisible(true);
         nextWindow.tick();
-        nextWindow.timer.start();
         return nextWindow;
     }
 
@@ -72,13 +66,5 @@ public abstract class BaseGUI extends JFrame {
      * Method which provides ability to change the data. Here you need to implement the change logic.
      */
     public void tick() {}
-
-    private Timer createTickTimer() {
-        Timer timer = new Timer(INTERVAL, (event) -> {
-            tick();
-            this.revalidate();
-        });
-        return timer;
-    }
 
 }

@@ -12,7 +12,7 @@ INSERT INTO `creditcard`(`id`, `person_id`) VALUES (6, 2);
 INSERT INTO `car`(`id`, `car_type`, `brand`, `model`, `state`) VALUES (1, 'DEFAULT', 'BMW', 'i3', 'FREE');
 INSERT INTO `car`(`id`, `car_type`, `brand`, `model`, `state`) VALUES (2, 'SPORT', 'BMW', 'i8', 'RENTED');
 INSERT INTO `car`(`id`, `car_type`, `brand`, `model`, `state`) VALUES (3, 'SPORT', 'TESLA', 'MODEL S', 'FREE');
-INSERT INTO `car`(`id`, `car_type`, `brand`, `model`, `state`) VALUES (4, 'DEFAULT', 'SKODA', 'CITIGOe iV', 'FREE');
+INSERT INTO `car`(`id`, `car_type`, `brand`, `model`, `state`) VALUES (4, 'DEFAULT', 'SKODA', 'CITIGOe iV', 'RENTED');
 INSERT INTO `car`(`id`, `car_type`, `brand`, `model`, `state`) VALUES (5, 'DEFAULT', 'AUDI', 'E-TRON', 'FREE');
 
 INSERT INTO `insurance`(`id`, `insuranceFrom`, `insuranceTo`, `car_id`) VALUES (1, '2018-01-01', '2018-12-31', 1);

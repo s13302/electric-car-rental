@@ -10,6 +10,7 @@ import pl.s13302.carrental.service.impl.ApplicationService;
 import javax.swing.*;
 import java.time.Clock;
 import java.time.ZoneId;
+import java.util.Scanner;
 
 public class Main {
 
@@ -18,6 +19,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         initializeApp();
+
+        System.out.print("Tell me which person ID you want to use: ");
+        long personId = 0;
+        try (Scanner scanner = new Scanner(System.in)) {
+            personId = scanner.nextLong();
+        }
 
         SwingUtilities.invokeLater(() -> {
             try {

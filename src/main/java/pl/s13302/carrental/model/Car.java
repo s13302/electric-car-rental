@@ -31,6 +31,9 @@ public abstract class Car {
     @Enumerated(EnumType.STRING)
     private CarState state;
 
+    @Column(nullable = false)
+    private String image;
+
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Hire> hires = new HashSet<>();
 
@@ -71,6 +74,14 @@ public abstract class Car {
     public void setState(CarState state) {
         this.state = state;
         this.carState = CarStateFactory.createCarState(state);
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Set<Hire> getHires() {

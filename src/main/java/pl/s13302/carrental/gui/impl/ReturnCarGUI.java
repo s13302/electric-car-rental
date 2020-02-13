@@ -26,7 +26,7 @@ public class ReturnCarGUI extends BaseGUI {
             JLabel imageLabel = new JLabel();
             imageLabel.setBounds(0, 0, 240, 135);
             panel.add(imageLabel, BorderLayout.LINE_START);
-            ImageIcon imageIcon = new ImageIcon(Config.getResourceFile("assets/bmwi3.jpg"));
+            ImageIcon imageIcon = new ImageIcon(Config.getResourceFile("assets/" + hireDescription.getCarImage()));
             Image image = imageIcon.getImage().getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(image);
             imageLabel.setIcon(imageIcon);

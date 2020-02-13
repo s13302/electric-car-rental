@@ -21,13 +21,14 @@ public class FinishedHireDetailsGUI extends BaseGUI {
     @Override
     public JPanel showWindow() {
         Hire hire = getApplicationService().getHireById(Main.hireId);
+        Car car = hire.getCar();
 
         JPanel panel = new JPanel(new BorderLayout());
 
         JLabel imageLabel = new JLabel();
         imageLabel.setBounds(0, 0, 240, 135);
         panel.add(imageLabel, BorderLayout.LINE_START);
-        ImageIcon imageIcon = new ImageIcon(Config.getResourceFile("assets/bmwi3.jpg"));
+        ImageIcon imageIcon = new ImageIcon(Config.getResourceFile("assets/" + car.getImage()));
         Image image = imageIcon.getImage().getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_SMOOTH);
         imageIcon = new ImageIcon(image);
         imageLabel.setIcon(imageIcon);
@@ -36,7 +37,6 @@ public class FinishedHireDetailsGUI extends BaseGUI {
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.add(new JLabel("Czas wypożyczenia: " + hire.getDuration() + " min"));
         rightPanel.add(new JLabel("Wyliczona opłata: " + hire.countPrice() + " PLN"));
-        Car car = hire.getCar();
         rightPanel.add(new JLabel("Samochód: " + car.getBrand() + " " + car.getModel()));
         panel.add(rightPanel, BorderLayout.CENTER);
 

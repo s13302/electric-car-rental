@@ -7,11 +7,13 @@ public class NotFinishedHireDescription {
     private final BigDecimal price;
     private final long distance;
     private final long rentTime;
+    private final String carImage;
 
-    public NotFinishedHireDescription(BigDecimal price, long distance, long rentTime) {
+    public NotFinishedHireDescription(BigDecimal price, long distance, long rentTime, String carImage) {
         this.price = price;
         this.distance = distance;
         this.rentTime = rentTime;
+        this.carImage = carImage;
     }
 
     public BigDecimal getPrice() {
@@ -26,12 +28,17 @@ public class NotFinishedHireDescription {
         return rentTime;
     }
 
+    public String getCarImage() {
+        return carImage;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("NotFinishedHireDescription{");
         sb.append("price=").append(price);
         sb.append(", distance=").append(distance);
         sb.append(", rentTime=").append(rentTime);
+        sb.append(", carImage=").append(carImage);
         sb.append('}');
         return sb.toString();
     }

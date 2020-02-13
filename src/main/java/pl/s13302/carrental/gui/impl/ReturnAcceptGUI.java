@@ -1,6 +1,7 @@
 package pl.s13302.carrental.gui.impl;
 
 import pl.s13302.carrental.Main;
+import pl.s13302.carrental.configuration.Config;
 import pl.s13302.carrental.gui.BaseGUI;
 import pl.s13302.carrental.helper.NotFinishedHireDescription;
 import pl.s13302.carrental.service.IApplicationService;
@@ -20,6 +21,14 @@ public class ReturnAcceptGUI extends BaseGUI {
     public JPanel showWindow() {
         NotFinishedHireDescription hireDescription = getApplicationService().countPrice(Main.hireId);
         JPanel panel = new JPanel(new BorderLayout());
+
+        JLabel imageLabel = new JLabel();
+        imageLabel.setBounds(0, 0, 240, 135);
+        panel.add(imageLabel, BorderLayout.LINE_START);
+        ImageIcon imageIcon = new ImageIcon(Config.getResourceFile("assets/" + hireDescription.getCarImage()));
+        Image image = imageIcon.getImage().getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(image);
+        imageLabel.setIcon(imageIcon);
 
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));

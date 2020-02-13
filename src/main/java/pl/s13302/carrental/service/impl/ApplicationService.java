@@ -70,7 +70,7 @@ public class ApplicationService implements IApplicationService {
             long distance = 300L;
             long time = hire.getDuration();
             session.getTransaction().rollback();
-            return new NotFinishedHireDescription(countedPrice, distance, time);
+            return new NotFinishedHireDescription(countedPrice, distance, time, hire.getCar().getImage());
         } catch (Exception e) {
             if (session.getTransaction().getStatus().canRollback()) {
                 session.getTransaction().rollback();

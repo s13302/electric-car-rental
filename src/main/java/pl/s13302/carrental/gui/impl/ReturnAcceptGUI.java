@@ -7,53 +7,31 @@ import pl.s13302.carrental.service.IApplicationService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 public class ReturnAcceptGUI extends BaseGUI {
 
     private static final String TITLE = "Akceptacja";
-
-    private JPanel leftPanel = new JPanel();
-    private JLabel rentTime = null;
-    private JLabel distance = null;
-    private JLabel price = null;
 
     public ReturnAcceptGUI(IApplicationService applicationService) {
         super(TITLE, applicationService);
     }
 
     @Override
-    public void tick() {
+    public JPanel showWindow() {
         NotFinishedHireDescription hireDescription = getApplicationService().countPrice(Main.hireId);
+        JPanel panel = new JPanel(new BorderLayout());
 
-        if (rentTime != null) {
-            leftPanel.remove(rentTime);
-        }
-        if (distance != null) {
-            leftPanel.remove(distance);
-        }
-        if (price != null) {
-            leftPanel.remove(price);
-        }
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        panel.add(leftPanel, BorderLayout.CENTER);
 
-        rentTime = new JLabel("Czas wypożyczenia: " + hireDescription.getRentTime() + " min");
-        distance = new JLabel("Przejechany dystans: " + hireDescription.getDistance() + " km");
-        price = new JLabel("Wyliczona cena: " + hireDescription.getPrice() + " PLN");
-
-        Font priceFont = price.getFont();
-        price.setFont(priceFont.deriveFont(priceFont.getStyle() | Font.BOLD));
-
+        JLabel rentTime = new JLabel("Czas wypożyczenia: " + hireDescription.getRentTime() + " min");
+        JLabel distance = new JLabel("Przejechany dystans: " + hireDescription.getDistance() + " km");
+        JLabel price = new JLabel("Wyliczona cena: " + hireDescription.getPrice() + " PLN");
+        jLabelWithBold(price);
         leftPanel.add(rentTime);
         leftPanel.add(distance);
         leftPanel.add(price);
-    }
-
-    @Override
-    public JPanel showWindow() {
-        JPanel panel = new JPanel(new BorderLayout());
-
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        panel.add(leftPanel, BorderLayout.CENTER);
 
         JPanel secondPanel = new JPanel(new BorderLayout());
 

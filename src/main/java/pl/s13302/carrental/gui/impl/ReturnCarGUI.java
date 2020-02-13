@@ -13,38 +13,14 @@ public class ReturnCarGUI extends BaseGUI {
 
     private static final String TITLE = "Zwróć samochód";
 
-    private JPanel rightPanel = new JPanel();
-    private JLabel rentTime = null;
-    private JLabel price = null;
-
     public ReturnCarGUI(IApplicationService applicationService) {
         super(TITLE, applicationService);
     }
 
     @Override
-    public void tick() {
-        NotFinishedHireDescription hireDescription = getApplicationService().countPrice(Main.hireId);
-
-        if (rentTime != null) {
-            rightPanel.remove(rentTime);
-        }
-        if (price != null) {
-            rightPanel.remove(price);
-        }
-
-        rentTime = new JLabel("Czas wypożyczenia: " + hireDescription.getRentTime() + " min");
-        price = new JLabel("Wyliczona cena: " + hireDescription.getPrice() + " PLN");
-
-        Font priceFont = price.getFont();
-        price.setFont(priceFont.deriveFont(priceFont.getStyle() | Font.BOLD));
-
-        rightPanel.add(rentTime);
-        rightPanel.add(price);
-    }
-
-    @Override
     public JPanel showWindow() {
         try {
+            NotFinishedHireDescription hireDescription = getApplicationService().countPrice(Main.hireId);
             JPanel panel = new JPanel(new BorderLayout());
 
             JLabel imageLabel = new JLabel();
@@ -57,9 +33,15 @@ public class ReturnCarGUI extends BaseGUI {
 
             JPanel rightColumn = new JPanel(new BorderLayout());
 
-
+            JPanel rightPanel = new JPanel();
             rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
             rightColumn.add(rightPanel, BorderLayout.CENTER);
+
+            JLabel rentTime = new JLabel("Czas wypożyczenia: " + hireDescription.getRentTime() + " min");
+            JLabel price = new JLabel("Wyliczona cena: " + hireDescription.getPrice() + " PLN");
+            jLabelWithBold(price);
+            rightPanel.add(rentTime);
+            rightPanel.add(price);
 
             JButton returnButton = new JButton("Zwróć");
             returnButton.addActionListener((event) -> {

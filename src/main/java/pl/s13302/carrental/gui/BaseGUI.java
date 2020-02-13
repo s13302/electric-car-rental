@@ -3,6 +3,7 @@ package pl.s13302.carrental.gui;
 import pl.s13302.carrental.service.IApplicationService;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -51,7 +52,6 @@ public abstract class BaseGUI extends JFrame {
                 .newInstance(applicationService);
         nextWindow.add(nextWindow.showWindow());
         nextWindow.setVisible(true);
-        nextWindow.tick();
         return nextWindow;
     }
 
@@ -62,9 +62,9 @@ public abstract class BaseGUI extends JFrame {
      */
     public abstract JPanel showWindow();
 
-    /**
-     * Method which provides ability to change the data. Here you need to implement the change logic.
-     */
-    public void tick() {}
+    protected void jLabelWithBold(JLabel jLabel) {
+        Font font = jLabel.getFont();
+        jLabel.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
+    }
 
 }

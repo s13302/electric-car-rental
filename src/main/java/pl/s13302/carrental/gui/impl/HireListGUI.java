@@ -39,19 +39,24 @@ public class HireListGUI extends BaseGUI {
                     }
                     boolean hireFinished = (boolean) table.getValueAt(selectedRow, 5);
                     long hireId = (long) table.getValueAt(selectedRow, 0);
+                    Class<? extends BaseGUI> nextWindowClass;
+                    String buttonLabel;
                     if (hireFinished) {
-                        button = new JButton("Szczegóły");
+                        buttonLabel = "Szczegóły";
+                        nextWindowClass = FinishedHireDetailsGUI.class;
                     } else {
-                        button = new JButton("Zwróć samochód");
-                        button.addActionListener(e -> {
-                            Main.hireId = hireId;
-                            try {
-                                showNextWindow(this, ReturnCarGUI.class, getApplicationService());
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
-                        });
+                        buttonLabel = "Zwróć samochód";
+                        nextWindowClass = ReturnCarGUI.class;
                     }
+                    button = new JButton(buttonLabel);
+                    button.addActionListener(e -> {
+                        Main.hireId = hireId;
+                        try {
+                            showNextWindow(this, nextWindowClass, getApplicationService());
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    });
                     panel.add(button, BorderLayout.PAGE_END);
                     panel.validate();
                 }

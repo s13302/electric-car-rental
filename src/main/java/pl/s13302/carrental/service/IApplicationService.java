@@ -14,6 +14,8 @@ public interface IApplicationService {
 
     NotFinishedHireDescription countPrice(long hireId);
 
+    Hire getHireById(long hireId);
+
     void releaseCar(Long hireId);
 
     void finalizeService();

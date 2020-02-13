@@ -80,6 +80,23 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
+    public Hire getHireById(long hireId) {
+        try {
+            session.beginTransaction();
+            Hire hire = (Hire) session.createQuery("from pl.s13302.carrental.model.Hire where id=:hireId")
+                    .setParameter("hireId", hireId)
+                    .getSingleResult();
+            session.getTransaction().rollback();
+            return hire;
+        } catch (Exception e) {
+            if (session.getTransaction().getStatus().canRollback()) {
+                session.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void releaseCar(Long hireId) {
         try {
             session.beginTransaction();

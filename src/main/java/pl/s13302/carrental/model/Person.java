@@ -1,8 +1,8 @@
 package pl.s13302.carrental.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +17,8 @@ public class Person {
     @Column(nullable = false)
     private String drivingLicenseNumber;
 
-    @Temporal(TemporalType.DATE)
-    private Date drivingLicenseValidTo;
+    @Basic
+    private LocalDate drivingLicenseValidTo;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CreditCard> creditCards = new HashSet<>();
@@ -42,11 +42,11 @@ public class Person {
         this.drivingLicenseNumber = drivingLicenseNumber;
     }
 
-    public Date getDrivingLicenseValidTo() {
+    public LocalDate getDrivingLicenseValidTo() {
         return drivingLicenseValidTo;
     }
 
-    public void setDrivingLicenseValidTo(Date drivingLicenseValidTo) {
+    public void setDrivingLicenseValidTo(LocalDate drivingLicenseValidTo) {
         this.drivingLicenseValidTo = drivingLicenseValidTo;
     }
 

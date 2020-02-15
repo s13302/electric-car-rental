@@ -29,13 +29,23 @@ public class HireListGUI extends BaseGUI {
         JTable table = new JTable(tableModel);
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        JPanel bottomPanel = new JPanel(new GridLayout(1, 2));
+        JButton backBtn = new JButton("Powrót");
+        backBtn.addActionListener(e -> {
+            try {
+                showNextWindow(this, PeopleListGUI.class, getApplicationService());
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        bottomPanel.add(backBtn);
 
         table.getSelectionModel().addListSelectionListener(event -> {
             if (! event.getValueIsAdjusting()) {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow >= 0) {
                     if (button != null) {
-                        panel.remove(button);
+                        bottomPanel.remove(button);
                     }
                     boolean hireFinished = (boolean) table.getValueAt(selectedRow, 5);
                     long hireId = (long) table.getValueAt(selectedRow, 0);
@@ -57,11 +67,12 @@ public class HireListGUI extends BaseGUI {
                             throw new RuntimeException(ex);
                         }
                     });
-                    panel.add(button, BorderLayout.PAGE_END);
-                    panel.validate();
+                    bottomPanel.add(button, BorderLayout.PAGE_END);
+                    bottomPanel.validate();
                 }
             }
         });
+        panel.add(bottomPanel, BorderLayout.PAGE_END);
 
         return panel;
     }

@@ -4,6 +4,7 @@ import pl.s13302.carrental.configuration.Config;
 import pl.s13302.carrental.configuration.IConstants;
 import pl.s13302.carrental.gui.BaseGUI;
 import pl.s13302.carrental.gui.impl.HireListGUI;
+import pl.s13302.carrental.gui.impl.PeopleListGUI;
 import pl.s13302.carrental.service.IApplicationService;
 import pl.s13302.carrental.service.impl.ApplicationService;
 
@@ -23,14 +24,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         initializeApp();
 
-        System.out.print("Tell me which person ID you want to use: ");
-        try (Scanner scanner = new Scanner(System.in)) {
-            personId = scanner.nextLong();
-        }
-
         SwingUtilities.invokeLater(() -> {
             try {
-                BaseGUI.showNextWindow(null, HireListGUI.class, applicationService);
+                BaseGUI.showNextWindow(null, PeopleListGUI.class, applicationService);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

@@ -33,6 +33,22 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
+    public Collection<Person> getAllPeople() {
+        try {
+            session.beginTransaction();
+            Collection<Person> result = session.createQuery("from pl.s13302.carrental.model.Person")
+                    .list();
+            session.getTransaction().commit();
+            return Collections.unmodifiableCollection(result);
+        } catch (Exception e) {
+            if (session.getTransaction().getStatus().canRollback()) {
+                session.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Clock getClock() {
         return clock;
     }
@@ -43,13 +59,11 @@ public class ApplicationService implements IApplicationService {
             Person person = (Person) session.createQuery("from pl.s13302.carrental.model.Person where id=:personId")
                     .setParameter("personId", personId)
                     .getSingleResult();
-            Collection<Hire> result = Collections.unmodifiableCollection(
-                    session.createQuery("from pl.s13302.carrental.model.Hire where person=:person")
-                            .setParameter("person", person)
-                            .list()
-            );
+            Collection<Hire> result = session.createQuery("from pl.s13302.carrental.model.Hire where person=:person")
+                    .setParameter("person", person)
+                    .list();
             session.getTransaction().commit();
-            return result;
+            return Collections.unmodifiableCollection(result);
         } catch (Exception e) {
             if (session.getTransaction().getStatus().canRollback()) {
                 session.getTransaction().rollback();

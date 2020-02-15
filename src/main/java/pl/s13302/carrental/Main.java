@@ -3,7 +3,6 @@ package pl.s13302.carrental;
 import pl.s13302.carrental.configuration.Config;
 import pl.s13302.carrental.configuration.IConstants;
 import pl.s13302.carrental.gui.BaseGUI;
-import pl.s13302.carrental.gui.impl.HireListGUI;
 import pl.s13302.carrental.gui.impl.PeopleListGUI;
 import pl.s13302.carrental.service.IApplicationService;
 import pl.s13302.carrental.service.impl.ApplicationService;
@@ -11,7 +10,6 @@ import pl.s13302.carrental.service.impl.ApplicationService;
 import javax.swing.*;
 import java.time.Clock;
 import java.time.ZoneId;
-import java.util.Scanner;
 
 public class Main {
 

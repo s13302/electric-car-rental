@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 public abstract class BaseGUI extends JFrame {
 
     private final IApplicationService applicationService;
+    private static boolean NEXT_WINDOW_OPENING = false;
 
     protected BaseGUI(String title, IApplicationService applicationService) {
         super(title);
@@ -22,8 +23,17 @@ public abstract class BaseGUI extends JFrame {
         addWindowListener(new WindowAdapter() {
 
             @Override
+            public void windowOpened(WindowEvent e) {
+                super.windowOpened(e);
+                NEXT_WINDOW_OPENING = false;
+            }
+
+            @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
+                if (! NEXT_WINDOW_OPENING) {
+                    getApplicationService().finalizeService();
+                }
             }
 
         });
@@ -44,6 +54,7 @@ public abstract class BaseGUI extends JFrame {
      */
     public static BaseGUI showNextWindow(BaseGUI currentWindow, Class<? extends BaseGUI> nextWindowClass, IApplicationService applicationService) throws Exception {
         assert nextWindowClass != null;
+        NEXT_WINDOW_OPENING = true;
         if (currentWindow != null) {
             currentWindow.dispatchEvent(new WindowEvent(currentWindow, WindowEvent.WINDOW_CLOSING));
         }
